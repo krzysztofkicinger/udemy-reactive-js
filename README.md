@@ -84,12 +84,19 @@ Reactive Programming - way of thinking:
 * Push model:
     * Reactive model
     * Data source itself contains all the concepts all the behavior that it needs in order to determine when it has new data, error occurs or stream completes
-    * Observable = reactive data source that produces items over a period of time (and may at some point of time complete)
-    * We hook on this pipeline
+    * Observable = reactive data source that produces items over a period of time (and may at some point of time complete, pass error)
+    * We do not pull data from data source this is responsibility for streams, we react on the data that will appear in the stream
+    * We hook on te pipeline that is attached to the tweet stream (there can be many pipelines/subscriptions)
+    * We wait until state of the application changes and then we transform new state and update relevant parts of the application
 
 2. Everything is a Database:
-* 
+* Mouse Movements
+* Current User - if you think of it as the stream of events, all code that is dependent of the user gets updated
+* Web Requests
+* Input Boxes
+* ... and more
 
 3. Where does RX fit in:
-*
+* Observable - thing that can be observed
+* Subscriber - thing that latches onto observable and gets notified when observable produces new value
 
