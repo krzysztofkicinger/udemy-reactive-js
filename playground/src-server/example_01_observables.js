@@ -50,12 +50,14 @@ error$.subscribe(
 function createInterval$(time) {
     return new Rx.Observable(observer => {
         let index = 0;
-        setInterval(
+        let interval = setInterval(
             () => {
                 console.log(`Generating ${index}`);
                 observer.next(index++);
             }, time
-        )
+        );
+
+        return () => clearInterval(interval);
     })
 }
 
@@ -69,6 +71,7 @@ function createSubscriber(tag) {
 
 const everySecond$ = createInterval$(1000);
 const subscription = everySecond$.subscribe(createSubscriber("one"));
+const subscription2 = everySecond$.take(3).subscribe(createSubscriber("two"));
 
 setTimeout(() =>
     subscription.unsubscribe()

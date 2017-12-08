@@ -86,3 +86,13 @@ subscription.unsubscribe()
 
 **How to stop generating values when observer (Subscription) finishes listening?**
 
+Return a function that will be invoked when observer (Subscription) unsubscribes.
+
+**How to unsubscribe after particular number of elements?***
+
+Use ```take(elements)``` method:
+
+```js
+const subscription2 = everySecond$.take(3).subscribe(createSubscriber("two"));
+```
+
