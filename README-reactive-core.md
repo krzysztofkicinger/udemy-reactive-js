@@ -74,3 +74,15 @@ simple$.subscribe({
     complete: () => console.log('Object - complete')
 })
 ```
+
+## Disposing Subscription
+
+- ```observable.subscribe(...)``` returns ```Subscription``` object
+- This **does not** completes the observable - **memory leak**
+
+```js
+subscription.unsubscribe()
+```
+
+**How to stop generating values when observer (Subscription) finishes listening?**
+

@@ -52,7 +52,7 @@ function createInterval$(time) {
         let index = 0;
         setInterval(
             () => {
-
+                console.log(`Generating ${index}`);
                 observer.next(index++);
             }, time
         )
@@ -68,4 +68,8 @@ function createSubscriber(tag) {
 }
 
 const everySecond$ = createInterval$(1000);
-everySecond$.subscribe(createSubscriber("one"));
+const subscription = everySecond$.subscribe(createSubscriber("one"));
+
+setTimeout(() =>
+    subscription.unsubscribe()
+, 3000);
