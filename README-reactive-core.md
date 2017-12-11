@@ -8,6 +8,7 @@
 - Produces some either values or errors
 - Can be completed - has no value, but signals that this Observable closes
 - Can produce errors - error object is then passed to the observable
+- **Lazy** - only fires up when 
 
 ### Operator
     
@@ -15,6 +16,7 @@
 - Returns new Observable
 - Do not produce values itself
 - Can be chained into pipelines
+- Observable that wraps another observable
 
 ### Subscription
 
@@ -95,4 +97,30 @@ Use ```take(elements)``` method:
 ```js
 const subscription2 = everySecond$.take(3).subscribe(createSubscriber("two"));
 ```
+
+## How the operator looks like?
+
+Function that wraps the observable (and other arguments) and returns new observable.
+
+```js
+function take$(sourceObservable$, amount) {
+    return new Rx.Observable(observer => {
+        let count = 0;
+        const subscription = sourceObservable$.subscribe({
+            next: item => {
+                observer.next(item);
+                if(++count === amount) {
+                    observer.complete();
+                }
+            },
+            error: err => observer.error(err),
+            complete: () => observer.complete()
+        });
+        return () => subscription.unsubscribe();
+    })
+}
+```
+
+
+
 

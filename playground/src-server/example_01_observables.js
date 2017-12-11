@@ -1,4 +1,5 @@
 import Rx from 'rxjs/Rx';
+import { createSubscriber } from "./lib/util";
 
 const promise = new Promise((resolve, reject) => {
     resolve("HEY");
@@ -61,14 +62,6 @@ function createInterval$(time) {
     })
 }
 
-function createSubscriber(tag) {
-    return {
-        next: item => console.log(`${tag}.next ${item}`),
-        error: error => console.error(`${tag}.error ${error}`),
-        complete: () => console.log(`${tag}.completed`),
-    }
-}
-
 const everySecond$ = createInterval$(1000);
 const subscription = everySecond$.subscribe(createSubscriber("one"));
 const subscription2 = everySecond$.take(3).subscribe(createSubscriber("two"));
@@ -76,3 +69,28 @@ const subscription2 = everySecond$.take(3).subscribe(createSubscriber("two"));
 setTimeout(() =>
     subscription.unsubscribe()
 , 3000);
+
+/*
+    CREATING AN OPERATOR
+ */
+
+function take$(sourceObservable$, amount) {
+    return new Rx.Observable(observer => {
+        let count = 0;
+        const subscription = sourceObservable$.subscribe({
+            next: item => {
+                observer.next(item);
+                if(++count === amount) {
+                    observer.complete();
+                }
+            },
+            error: err => observer.error(err),
+            complete: () => observer.complete()
+        });
+        return () => subscription.unsubscribe();
+    })
+}
+
+const everySecondForFirstFives$ = createInterval$(1000);
+const firstFive$ = take$(everySecondForFirstFives$, 5);
+firstFive$.subscribe(createSubscriber("firstFive"));
