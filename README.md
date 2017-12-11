@@ -100,3 +100,10 @@ Reactive Programming - way of thinking:
 * Observable - thing that can be observed
 * Subscriber - thing that latches onto observable and gets notified when observable produces new value
 
+
+## RxJS Source Code, Resources and Documentation
+
+- https://github.com/ReactiveX/rxjs
+- http://reactivex.io/rxjs/
+- http://rxmarbles.com/
+https://jaredforsyth.com/rxvision/examples/playground/
